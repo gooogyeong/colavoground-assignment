@@ -8,7 +8,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  //justify-content: space-between;
 }
 
 .header {
@@ -16,9 +16,18 @@
   justify-content: space-between;
 }
 
+::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
 .close {
   position: absolute;
   top: 0.5em;
+}
+
+.closeIcon {
+  cursor: pointer;
 }
 
 li {
@@ -54,4 +63,30 @@ li {
 
 .menuContent {
   text-align: left;
+}
+
+.discountItem {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+#cart-item,
+#discount-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.option {
+  cursor: pointer;
+}
+
+.count {
+  color: grey;
+}
+
+.count:hover {
+  font-size: 200%;
+  color: black;
 }

@@ -24,20 +24,21 @@ type State = {
 
 type Action = { type: "GET_SERVER_DATA"; data: Data };
 
-function cartReducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "GET_SERVER_DATA":
-      return {
-        ...state,
-        //currency_code: action.data["currency_code"],
-        //discounts: action.data.discounts,
-        items: action.data.items,
-      };
-  }
-}
+// function cartReducer(state: State, action: Action): State {
+//   switch (action.type) {
+//     case "GET_SERVER_DATA":
+//       return {
+//         ...state,
+//         items: action.data.items,
+//       };
+//   }
+// }
 
 type MenuProps = {
   showHome: () => void;
+  handleSelect: (item: Item) => void;
+  items: Items;
+  selectedItems: Item[];
 };
 
 type Item = {
@@ -48,45 +49,23 @@ type Item = {
 
 type Items = {
   [key: string]: Item;
-  //item: Item;
 };
 
-type CheckItems = {
-  [key: string]: string;
-};
-
-function Menu({ showHome }: MenuProps) {
-  const [items, setItems] = useState<Items | null>(null);
-  const [checkedItems, checkItem] = useState<string[]>([]); //<CheckItems[]>([]);
-
-  const getServerData = () => {
-    return axios
-      .get(
-        "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData"
-      )
-      .then((serverData: any) => {
-        console.log(serverData.data.items);
-        // const items = [];
-        // for (let key in serverData.data.items) {
-        //   items.push(serverData.data.items[key]);
-        // }
-        setItems(serverData.data.items);
-        //dispatch({ type: "GET_SERVER_DATA", data: serverData.data });
-      });
-  };
-
-  useEffect(() => {
-    getServerData();
-  }, []);
-
-  const handleCheck = (key: string) => {
-    checkItem([...checkedItems, key]);
-  };
-
+function Menu({ showHome, handleSelect, items, selectedItems }: MenuProps) {
   return (
     <div className="container">
       <div className="header">
-        <CloseIcon className="closeIcon" onClick={showHome} />
+        <CloseIcon
+          className="closeIcon"
+          onClick={function () {
+            if (selectedItems.length >= 3) {
+              //console.log(selectedItems);
+              showHome();
+            } else {
+              alert("최소 3개 이상의 시술을 선택해야합니다");
+            }
+          }}
+        />
         <div>시술메뉴</div>
         <AddIcon />
       </div>
@@ -94,7 +73,12 @@ function Menu({ showHome }: MenuProps) {
         {items ? (
           <ul>
             {Object.keys(items).map((key) => (
-              <div className="menuItem" onClick={() => handleCheck(key)}>
+              <div
+                className="menuItem"
+                onClick={() => {
+                  handleSelect(items[key]);
+                }}
+              >
                 <div className="menuContent">
                   <li>
                     {items[key].name}
@@ -103,7 +87,11 @@ function Menu({ showHome }: MenuProps) {
                   <li>{items[key].price}</li>
                 </div>
                 <CheckIcon
-                  style={checkedItems.includes(key) ? {} : { display: "none" }}
+                  style={
+                    selectedItems.includes(items[key])
+                      ? {}
+                      : { display: "none" }
+                  }
                 />
               </div>
             ))}
