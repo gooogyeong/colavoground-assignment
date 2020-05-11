@@ -26,6 +26,11 @@ type Discounts = {
   [key: string]: Discount;
 };
 
+//type ServerRespone =  {
+//    status: number;
+//   body: ServerData
+//}
+
 function Cart() {
   const [state, setState] = useState("home");
   const [items, setItems] = useState<Items | {}>({});
@@ -38,20 +43,15 @@ function Cart() {
       .get(
         "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData"
       )
-      .then((serverData: any) => {
+      .then((serverRespone: any /*: ServerData*/ /*: any*/) => {
         //! type any
-        //console.log(serverData.data);
-        setItems(serverData.data.items);
-        const discountsData = serverData.data.discounts;
+        console.log(serverRespone);
+        setItems(serverRespone.data.items);
+        const discountsData = serverRespone.data.discounts;
         for (let key in discountsData) {
           discountsData[key].items = [];
         }
-        //const newDiscounts = Object.keys(serverData.data.discounts).map((key) => serverData.data.discounts)
-        setDiscounts(
-          discountsData /*.map((discount) => (discount.items = []))*/
-          /*serverData.data
-            .discounts*/
-        );
+        setDiscounts(discountsData);
       });
   };
 
@@ -120,6 +120,20 @@ function Cart() {
     }
   };
 
+  const selectDiscountItem = (itemIdx: number, item: Item) => {
+    const dcItems: Item[] = selectedDiscounts[itemIdx].items;
+    const updatedSelectedDiscounts = [...selectedDiscounts];
+    const updatedDcItems = [...dcItems];
+    const i: number = dcItems.indexOf(item);
+    if (i !== -1) {
+      updatedDcItems.splice(i, 1);
+      updatedSelectedDiscounts[itemIdx].items = updatedDcItems;
+    } else {
+      updatedSelectedDiscounts[itemIdx].items = [...dcItems, item];
+    }
+    discountPrice(updatedSelectedDiscounts);
+  };
+
   return (
     <div style={{ height: "100%" }}>
       {state === "home" && (
@@ -129,6 +143,7 @@ function Cart() {
           selectCount={selectCount}
           selectedItems={selectedItems}
           selectedDiscounts={selectedDiscounts}
+          selectDiscountItem={selectDiscountItem}
           //discountPrice={discountPrice}
         />
       )}

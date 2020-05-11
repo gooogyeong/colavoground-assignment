@@ -24,6 +24,7 @@ type CartHomeProps = {
   selectCount: (itemIdx: number | undefined, count: number | undefined) => void;
   selectedItems: Item[];
   selectedDiscounts: Discount[];
+  selectDiscountItem: (itemIdx: number, item: Item) => void;
   //discountPrice: Dispatch<SetStateAction<Discount[]>>; //() => void;
 };
 
@@ -33,9 +34,12 @@ function CartHome({
   selectCount,
   selectedItems,
   selectedDiscounts,
+  selectDiscountItem,
 }: //discountPrice,
 CartHomeProps) {
-  //const [discountSum, discountFromSum] = useState(0);
+  //const [showExpander, handleExpander] = useState(false);
+
+  //const
 
   return (
     <div className="container">
@@ -129,6 +133,7 @@ CartHomeProps) {
                   item={discount}
                   //popperTitle={discount.name}
                   popperContent={selectedItems}
+                  selectDiscountItem={selectDiscountItem}
                 />
               </div>
             </div>

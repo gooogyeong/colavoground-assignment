@@ -1,6 +1,6 @@
 import React from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import SimplePopper from "./SimplePopper";
+//import SimplePopper from "./SimplePopper";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Popper from "@material-ui/core/Popper";
 import CheckIcon from "@material-ui/icons/Check";
@@ -42,6 +42,7 @@ type ExpandProps = {
     itemIdx: number | undefined,
     count: number | undefined
   ) => void;
+  selectDiscountItem?: (itemIdx: number, item: Item) => void;
 };
 
 function Expand({
@@ -52,6 +53,7 @@ function Expand({
   //popperTitle,
   popperContent,
   selectCount,
+  selectDiscountItem,
 }: ExpandProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -94,22 +96,28 @@ function Expand({
                   </li>
                 );
               } else {
-                console.log(item); //{name: "회원권 할인", rate: 0.1, items: Array(3)}
-                console.log(selectedDiscounts);
-                console.log(itemIdx);
-                console.log(content); //{count: 1, name: "드라이", price: 30000}
                 return (
-                  <li className="discountCheck">
+                  <li
+                    className="discountCheck"
+                    onClick={() => {
+                      if (
+                        typeof selectDiscountItem === "function" &&
+                        typeof itemIdx === "number"
+                      ) {
+                        selectDiscountItem(itemIdx, content);
+                      }
+                    }}
+                  >
                     {content.name}
                     {
                       <CheckIcon
-                      //style={
-                      //  selectedDiscounts !== undefined &&
-                      //  typeof itemIdx === "number" &&
-                      //  ({ selectedDiscounts }: Discount[])[itemIdx].items.includes(content)
-                      //    ? {}
-                      //    : { display: "none" }
-                      //}
+                        style={
+                          selectedDiscounts !== undefined &&
+                          typeof itemIdx === "number" &&
+                          selectedDiscounts[itemIdx].items.includes(content)
+                            ? {}
+                            : { display: "none" }
+                        }
                       />
                     }
                   </li>
@@ -118,8 +126,10 @@ function Expand({
             })}
           </ul>
           <div>
-            <button>삭제</button>
-            <button>{typeof defaultText === "number" ? "완료" : "확인"}</button>
+            <button onClick={handleClick}>삭제</button>
+            <button onClick={handleClick}>
+              {typeof defaultText === "number" ? "완료" : "확인"}
+            </button>
           </div>
         </div>
       </Popper>
