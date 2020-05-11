@@ -54,7 +54,7 @@ function CartHome({
           </button>
         </div>
       </div>
-      <div>
+      <div id="cart">
         <ul>
           {selectedItems.map((item, itemIdx) => (
             <div id="cart-item">

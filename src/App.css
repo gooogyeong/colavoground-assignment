@@ -95,3 +95,7 @@ li {
 .editIcon {
   vertical-align: bottom;
 }
+
+#cart {
+  min-height: 33em;
+}
