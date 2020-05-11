@@ -33,10 +33,10 @@ type Discount = {
 
 type ExpandProps = {
   itemIdx?: number;
+  selectedItems?: Item[];
   selectedDiscounts?: Discount[] /* | []*/ /*undefined;*/;
   defaultText: string | number;
   item: Discount | Item;
-  //popperTitle: string;
   popperContent: Content[];
   selectCount?: (
     itemIdx: number | undefined,
@@ -47,10 +47,10 @@ type ExpandProps = {
 
 function Expand({
   itemIdx,
+  selectedItems,
   selectedDiscounts,
   defaultText,
   item,
-  //popperTitle,
   popperContent,
   selectCount,
   selectDiscountItem,
@@ -64,7 +64,6 @@ function Expand({
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popper" : undefined;
-  //console.log(item); //{name: "기분이다 할인", rate: 0.05, items: Array(3)}
   return (
     <div>
       <button aria-describedby={id} onClick={handleClick}>
@@ -82,6 +81,16 @@ function Expand({
               if (typeof content === "number") {
                 return (
                   <li
+                    /*style={
+                      selectedItems !== undefined &&
+                      typeof itemIdx === "number" &&
+                      selectedItems[itemIdx].count === content
+                        ? {
+                            fontSize: "200%",
+                            color: "black",
+                          }
+                        : {}
+                    }*/
                     className="count"
                     onClick={() => {
                       if (

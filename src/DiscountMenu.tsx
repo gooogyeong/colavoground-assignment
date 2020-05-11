@@ -51,14 +51,23 @@ function DiscountMenu({
                 }}
               >
                 <div>
-                  <li>{discounts[key].name}</li>
+                  <li>
+                    {discounts[key].name}
+                    <EditIcon
+                      style={{
+                        marginLeft: "0.25em",
+                        verticalAlign: "bottom",
+                      }}
+                      className="editICon"
+                    />
+                  </li>
                   <li>{discounts[key].rate * 100} %</li>
                 </div>
                 <CheckIcon
                   style={
                     selectedDiscounts.includes(discounts[key])
                       ? {}
-                      : { display: "none" }
+                      : { opacity: 0 /* display: "none"*/ }
                   }
                 />
               </div>

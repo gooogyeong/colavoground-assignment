@@ -26,10 +26,14 @@ type Discounts = {
   [key: string]: Discount;
 };
 
-//type ServerRespone =  {
-//    status: number;
-//   body: ServerData
-//}
+/*type ServerRespone =  {
+    data: {items: Items[], discounts: Discounts[], currency_code: string };
+    status: number;
+    statusText: string;
+    headers:
+    config: AxiosRequestConfig;
+   body: ServerData
+}*/
 
 function Cart() {
   const [state, setState] = useState("home");
@@ -43,7 +47,7 @@ function Cart() {
       .get(
         "https://us-central1-colavolab.cloudfunctions.net/requestAssignmentCalculatorData"
       )
-      .then((serverRespone: any /*: ServerData*/ /*: any*/) => {
+      .then((serverRespone: any /*: ServerResponse*/ /*: any*/) => {
         //! type any
         console.log(serverRespone);
         setItems(serverRespone.data.items);
@@ -144,7 +148,6 @@ function Cart() {
           selectedItems={selectedItems}
           selectedDiscounts={selectedDiscounts}
           selectDiscountItem={selectDiscountItem}
-          //discountPrice={discountPrice}
         />
       )}
       {state === "menu" && (

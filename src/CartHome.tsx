@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-
+import React from "react";
+import Clock from "./Clock";
 import CloseIcon from "@material-ui/icons/Close";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-//import Counter from "./Counter";
 import Expand from "./Expand";
 
 type Item = {
@@ -25,7 +24,6 @@ type CartHomeProps = {
   selectedItems: Item[];
   selectedDiscounts: Discount[];
   selectDiscountItem: (itemIdx: number, item: Item) => void;
-  //discountPrice: Dispatch<SetStateAction<Discount[]>>; //() => void;
 };
 
 function CartHome({
@@ -35,12 +33,7 @@ function CartHome({
   selectedItems,
   selectedDiscounts,
   selectDiscountItem,
-}: //discountPrice,
-CartHomeProps) {
-  //const [showExpander, handleExpander] = useState(false);
-
-  //const
-
+}: CartHomeProps) {
   return (
     <div className="container">
       <div className="close">
@@ -48,7 +41,8 @@ CartHomeProps) {
       </div>
       <div id="header">
         <div className="userName">곽지우</div>
-        <div className="datetime">datetime</div>
+        <Clock />
+        {/*<div className="datetime">datetime</div>*/}
         <div>
           <button className="headerButton" onClick={showMenu}>
             <AddCircleIcon />
@@ -71,9 +65,9 @@ CartHomeProps) {
               <div>
                 <Expand
                   itemIdx={itemIdx}
+                  selectedItems={selectedItems}
                   defaultText={item.count}
                   item={item}
-                  //popperTitle={item.name}
                   popperContent={[
                     1,
                     2,
@@ -103,23 +97,16 @@ CartHomeProps) {
               <div>
                 <li>{discount.name}</li>
                 <li>
-                  {
-                    /*selectedItems*/ discount.items
-                      .map((item) =>
-                        item.count > 1
-                          ? `${item.name}X${item.count}`
-                          : item.name
-                      )
-                      .join(",")
-                  }
+                  {discount.items
+                    .map((item) =>
+                      item.count > 1 ? `${item.name}X${item.count}` : item.name
+                    )
+                    .join(",")}
                 </li>
                 <li>
                   -
                   {discount.items.reduce(function (acc, curr) {
                     const discountPrice = acc + curr.price * curr.count;
-                    //discountFromSum(
-                    //  discountSum + discountPrice * discount.rate
-                    //);
                     return discountPrice;
                   }, 0) * discount.rate}{" "}
                   원({discount.rate * 100} %)
@@ -127,11 +114,10 @@ CartHomeProps) {
               </div>
               <div>
                 <Expand
-                  itemIdx={discountIdx /*itemIdx*/}
+                  itemIdx={discountIdx}
                   selectedDiscounts={selectedDiscounts}
                   defaultText="수정"
                   item={discount}
-                  //popperTitle={discount.name}
                   popperContent={selectedItems}
                   selectDiscountItem={selectDiscountItem}
                 />

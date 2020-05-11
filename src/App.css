@@ -8,7 +8,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  //justify-content: space-between;
 }
 
 .header {
@@ -43,6 +42,7 @@ li {
 
 .headerButton {
   width: 50%;
+  cursor: pointer;
 }
 
 #calculator {
@@ -76,6 +76,7 @@ li {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  text-align: left;
 }
 
 .option {
@@ -89,4 +90,8 @@ li {
 .count:hover {
   font-size: 200%;
   color: black;
+}
+
+.editIcon {
+  vertical-align: bottom;
 }
