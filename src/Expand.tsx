@@ -32,12 +32,15 @@ type Discount = {
 };
 
 type ExpandProps = {
+  select: (itemArr: Item[]) => void;
   itemIdx?: number;
   selectedItems?: Item[];
-  selectedDiscounts?: Discount[] /* | []*/ /*undefined;*/;
+  selectedDiscounts?: Discount[];
+  discountPrice: (dcArr: Discount[]) => void;
   defaultText: string | number;
   item: Discount | Item;
   popperContent: Content[];
+  handleSelect: (item: Item) => void;
   selectCount?: (
     itemIdx: number | undefined,
     count: number | undefined
@@ -46,12 +49,15 @@ type ExpandProps = {
 };
 
 function Expand({
+  select,
   itemIdx,
   selectedItems,
   selectedDiscounts,
   defaultText,
   item,
   popperContent,
+  handleSelect,
+  discountPrice,
   selectCount,
   selectDiscountItem,
 }: ExpandProps) {
@@ -66,13 +72,18 @@ function Expand({
   const id = open ? "simple-popper" : undefined;
   return (
     <div>
-      <button aria-describedby={id} onClick={handleClick}>
+      <button
+        className="popperButton"
+        aria-describedby={id}
+        onClick={handleClick}
+      >
         {defaultText}
-        <ExpandMoreIcon />
+        <ExpandMoreIcon style={{ verticalAlign: "middle" }} />
       </button>
       <Popper id={id} open={open} anchorEl={anchorEl}>
         <div className={classes.paper}>
           <div className="popperTitle">{item.name}</div>
+          <hr></hr>
           <ul
             className="option"
             style={{ maxHeight: "8em", overflowY: "scroll" }}
@@ -81,17 +92,13 @@ function Expand({
               if (typeof content === "number") {
                 return (
                   <li
-                    /*style={
+                    className={
                       selectedItems !== undefined &&
                       typeof itemIdx === "number" &&
                       selectedItems[itemIdx].count === content
-                        ? {
-                            fontSize: "200%",
-                            color: "black",
-                          }
-                        : {}
-                    }*/
-                    className="count"
+                        ? "count bold black"
+                        : "count"
+                    }
                     onClick={() => {
                       if (
                         typeof selectCount === "function" &&
@@ -117,14 +124,18 @@ function Expand({
                       }
                     }}
                   >
-                    {content.name}
+                    <div>
+                      <div>{content.name}</div>
+                      <div className="smallChar pink">{content.price}</div>
+                    </div>
+
                     {
                       <CheckIcon
                         style={
                           selectedDiscounts !== undefined &&
                           typeof itemIdx === "number" &&
                           selectedDiscounts[itemIdx].items.includes(content)
-                            ? {}
+                            ? { marginRight: "-1em", color: "#b084f4" }
                             : { display: "none" }
                         }
                       />
@@ -134,9 +145,46 @@ function Expand({
               }
             })}
           </ul>
-          <div>
-            <button onClick={handleClick}>삭제</button>
-            <button onClick={handleClick}>
+          <hr></hr>
+          <div className="action">
+            <button
+              className="pink bold"
+              style={{ backgroundColor: "transparent" }}
+              onClick={function (e) {
+                const selectedItemsName =
+                  selectedItems !== undefined
+                    ? selectedItems.map((item) => item.name)
+                    : [];
+                const selectedDcsName =
+                  selectedDiscounts !== undefined
+                    ? selectedDiscounts.map((dc) => dc.name)
+                    : [];
+                const itemIdx = selectedItemsName.indexOf(item.name);
+                const dcIdx = selectedDcsName.indexOf(item.name);
+                if (itemIdx !== -1) {
+                  const updatedSelectedItems =
+                    selectedItems !== undefined ? [...selectedItems] : [];
+                  updatedSelectedItems.splice(itemIdx, 1);
+                  select(updatedSelectedItems);
+                } else {
+                  const updatedSelectedDiscounts =
+                    selectedDiscounts !== undefined
+                      ? [...selectedDiscounts]
+                      : [];
+                  updatedSelectedDiscounts.splice(dcIdx, 1);
+                  discountPrice(updatedSelectedDiscounts);
+                }
+                handleClick(e);
+              }}
+            >
+              삭제
+            </button>
+            {"|"}
+            <button
+              className="lightGrey bold"
+              style={{ backgroundColor: "transparent" }}
+              onClick={handleClick}
+            >
               {typeof defaultText === "number" ? "완료" : "확인"}
             </button>
           </div>

@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 //import { flexbox } from "@material-ui/system";
 import CartHome from "./CartHome";
 import Menu from "./Menu";
@@ -49,7 +49,6 @@ function Cart() {
       )
       .then((serverRespone: any /*: ServerResponse*/ /*: any*/) => {
         //! type any
-        console.log(serverRespone);
         setItems(serverRespone.data.items);
         const discountsData = serverRespone.data.discounts;
         for (let key in discountsData) {
@@ -110,6 +109,19 @@ function Cart() {
     }
   };
 
+  const emptySelect = () => {
+    select([]);
+    if (selectedDiscounts.length) {
+      const updatedSelectedDiscounts = [...selectedDiscounts];
+      updatedSelectedDiscounts.forEach((dc) => (dc.items = []));
+      discountPrice(updatedSelectedDiscounts);
+    }
+  };
+
+  const emptyDCSelect = () => {
+    discountPrice([]);
+  };
+
   const handleDiscount = (discount: Discount) => {
     let updatedSelectedDiscounts = [...selectedDiscounts];
     if (!selectedDiscounts.includes(discount)) {
@@ -142,11 +154,14 @@ function Cart() {
     <div style={{ height: "100%" }}>
       {state === "home" && (
         <CartHome
+          select={select}
           showMenu={showMenu}
           showDiscount={showDiscount}
           selectCount={selectCount}
+          handleSelect={handleSelect}
           selectedItems={selectedItems}
           selectedDiscounts={selectedDiscounts}
+          discountPrice={discountPrice}
           selectDiscountItem={selectDiscountItem}
         />
       )}
@@ -154,6 +169,7 @@ function Cart() {
         <Menu
           showHome={showHome}
           handleSelect={handleSelect}
+          emptySelect={emptySelect}
           items={items}
           selectedItems={selectedItems}
         />
@@ -162,6 +178,7 @@ function Cart() {
         <DiscountMenu
           showHome={showHome}
           handleDiscount={handleDiscount}
+          emptyDCSelect={emptyDCSelect}
           discounts={discounts}
           selectedDiscounts={selectedDiscounts}
         />
