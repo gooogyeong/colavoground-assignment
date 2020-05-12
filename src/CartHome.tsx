@@ -145,7 +145,9 @@ function CartHome({
       </div>
 
       <div id="calculator" className="footer">
-        <hr></hr>
+        <div>
+          <hr className="totalLine"></hr>
+        </div>
         <div id="sum">
           <div className="sumText lightGrey">합계</div>
           <div className="total">
@@ -161,7 +163,6 @@ function CartHome({
             원
           </div>
         </div>
-
         <button className="footerButton">다음</button>
       </div>
     </div>
