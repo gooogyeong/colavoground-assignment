@@ -1,9 +1,9 @@
 import React from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-//import SimplePopper from "./SimplePopper";
 import { makeStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Popper from "@material-ui/core/Popper";
 import CheckIcon from "@material-ui/icons/Check";
+import { Item, Discount } from "../Type";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -17,19 +17,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-type Item = {
-  count: number;
-  name: string;
-  price: number;
-};
-
 type Content = number | Item;
-
-type Discount = {
-  name: string;
-  rate: number;
-  items: Item[];
-};
 
 type ExpandProps = {
   select: (itemArr: Item[]) => void;
@@ -56,7 +44,7 @@ function Expand({
   defaultText,
   item,
   popperContent,
-  handleSelect,
+  //handleSelect,
   discountPrice,
   selectCount,
   selectDiscountItem,
@@ -88,10 +76,11 @@ function Expand({
             className="option"
             style={{ maxHeight: "8em", overflowY: "scroll" }}
           >
-            {popperContent.map(function (content: Content) {
+            {popperContent.map(function (content: Content, i) {
               if (typeof content === "number") {
                 return (
                   <li
+                    key={`count_${content}`}
                     className={
                       selectedItems !== undefined &&
                       typeof itemIdx === "number" &&
@@ -114,6 +103,7 @@ function Expand({
               } else {
                 return (
                   <li
+                    key={`dc_item_${i}`}
                     className="discountCheck"
                     onClick={() => {
                       if (
@@ -128,7 +118,6 @@ function Expand({
                       <div>{content.name}</div>
                       <div className="smallChar pink">{content.price}</div>
                     </div>
-
                     {
                       <CheckIcon
                         style={
