@@ -138,7 +138,6 @@ function Expand({
               className="pink bold"
               style={{ backgroundColor: "transparent" }}
               onClick={function (e) {
-                //console.log(selectedDiscounts);
                 const selectedItemsName =
                   selectedItems !== undefined
                     ? selectedItems.map((item) => item.name)
@@ -185,4 +184,4 @@ function Expand({
   );
 }
 
-export default Expand;
+export default React.memo(Expand);

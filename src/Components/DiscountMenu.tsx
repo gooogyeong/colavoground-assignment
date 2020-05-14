@@ -78,4 +78,4 @@ function DiscountMenu({
   );
 }
 
-export default DiscountMenu;
+export default React.memo(DiscountMenu);

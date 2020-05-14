@@ -103,4 +103,4 @@ function Menu({ handleSelect, emptySelect, items, selectedItems }: MenuProps) {
   );
 }
 
-export default Menu;
+export default React.memo(Menu);

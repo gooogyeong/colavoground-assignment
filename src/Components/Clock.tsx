@@ -49,4 +49,4 @@ function Clock() {
   return <div className="clock lightGrey">{formatTimestamp(date)}</div>;
 }
 
-export default Clock;
+export default React.memo(Clock);

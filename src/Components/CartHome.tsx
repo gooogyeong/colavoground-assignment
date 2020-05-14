@@ -164,4 +164,4 @@ function CartHome({
   );
 }
 
-export default CartHome;
+export default React.memo(CartHome);
