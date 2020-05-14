@@ -23,7 +23,7 @@ type ExpandProps = {
   select: (itemArr: Item[]) => void;
   itemIdx?: number;
   selectedItems?: Item[];
-  selectedDiscounts?: Discount[];
+  selectedDiscounts: Discount[];
   discountPrice: (dcArr: Discount[]) => void;
   defaultText: string | number;
   item: Discount | Item;
@@ -44,14 +44,12 @@ function Expand({
   defaultText,
   item,
   popperContent,
-  //handleSelect,
   discountPrice,
   selectCount,
   selectDiscountItem,
 }: ExpandProps) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
@@ -140,6 +138,7 @@ function Expand({
               className="pink bold"
               style={{ backgroundColor: "transparent" }}
               onClick={function (e) {
+                //console.log(selectedDiscounts);
                 const selectedItemsName =
                   selectedItems !== undefined
                     ? selectedItems.map((item) => item.name)
@@ -150,16 +149,19 @@ function Expand({
                     : [];
                 const itemIdx = selectedItemsName.indexOf(item.name);
                 const dcIdx = selectedDcsName.indexOf(item.name);
+                const updatedSelectedDiscounts =
+                  selectedDiscounts !== undefined ? [...selectedDiscounts] : [];
+                console.log(updatedSelectedDiscounts);
                 if (itemIdx !== -1) {
                   const updatedSelectedItems =
                     selectedItems !== undefined ? [...selectedItems] : [];
                   updatedSelectedItems.splice(itemIdx, 1);
                   select(updatedSelectedItems);
+                  for (let i = 0; i < updatedSelectedDiscounts.length; i++) {
+                    updatedSelectedDiscounts[i].items = updatedSelectedItems;
+                  }
+                  discountPrice(updatedSelectedDiscounts);
                 } else {
-                  const updatedSelectedDiscounts =
-                    selectedDiscounts !== undefined
-                      ? [...selectedDiscounts]
-                      : [];
                   updatedSelectedDiscounts.splice(dcIdx, 1);
                   discountPrice(updatedSelectedDiscounts);
                 }

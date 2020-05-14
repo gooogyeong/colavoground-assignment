@@ -250,6 +250,7 @@ li {
 }
 
 .popperButton {
+  min-width: 3.5em;
   border: transparent;
   border-radius: 0.9em;
 }

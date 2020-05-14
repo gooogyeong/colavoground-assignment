@@ -66,6 +66,7 @@ function App() {
           for (let i = 0; i < updatedSelectedDiscounts.length; i++) {
             updatedSelectedDiscounts[i].items = updatedSelectedItems;
           }
+          discountPrice(updatedSelectedDiscounts);
         }
       }
     },
@@ -83,7 +84,7 @@ function App() {
 
   const emptyDCSelect = useCallback(() => {
     discountPrice([]);
-  }, [selectedDiscounts]);
+  }, []);
 
   const handleDiscount = useCallback(
     (discount: Discount) => {
@@ -99,7 +100,7 @@ function App() {
         discountPrice(updatedSelectedDiscounts);
       }
     },
-    [selectedDiscounts]
+    [selectedItems, selectedDiscounts]
   );
 
   const selectDiscountItem = useCallback(

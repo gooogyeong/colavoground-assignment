@@ -64,6 +64,7 @@ function CartHome({
                         select={select}
                         itemIdx={itemIdx}
                         selectedItems={selectedItems}
+                        selectedDiscounts={selectedDiscounts}
                         handleSelect={handleSelect}
                         defaultText={item.count}
                         item={item}
